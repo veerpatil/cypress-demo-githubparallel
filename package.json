@@ -1,0 +1,19 @@
+{
+  "name": "github-parallel",
+  "version": "1.0.0",
+  "description": "Project to demonstrate running cypress tests in parallel in github actions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^12.2.0",
+    "@shelex/cypress-allure-plugin": "^2.34.0"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  }
+}
