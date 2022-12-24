@@ -7,5 +7,6 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
-  experimentalWebKitSupport: true
+  experimentalWebKitSupport: true,
+  video:false
 });
