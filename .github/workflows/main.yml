@@ -15,12 +15,9 @@ jobs:
         run:  npm install  
       - name: install playwright
         run: npx playwright install-deps webkit
-    steps:
-      -name: Cypress Action
-        uses: cypress-io/github-action@v5.2.0
       - name: Run Tests
-        run:  npx cypress run --env allure=true --spec $(node cypress-parallel.js ${{ matrix.containers }} 5) --browser webkit --headed
-  
+        run:  npx cypress run --env allure=true --spec $(node cypress-parallel.js ${{ matrix.containers }} 5) --browser chrome --headed
+      
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
         if: always()
