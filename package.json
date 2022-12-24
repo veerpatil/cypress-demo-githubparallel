@@ -9,8 +9,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@shelex/cypress-allure-plugin": "^2.34.0",
     "cypress": "^12.2.0",
-    "@shelex/cypress-allure-plugin": "^2.34.0"
+    "playwright-webkit": "^1.29.1"
   },
   "dependencies": {
     "fs": "^0.0.1-security",
