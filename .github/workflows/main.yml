@@ -1,60 +1,27 @@
-name: Cypress Automation Tests
-on: [push]
+name: Create issue on commit
+on:
+  pull_request:
+    paths: ['*', '.github/**']
+
+permissions:
+  pull-requests: write
+
+env:
+  NUMBER: ${{ github.event.number }}
+  REVIEWERS: '["veertest-review"]'
+  LABELS: '["Framework Changes"]'
+
 jobs:
-  job1:
-    name: cypress-run
+  assign-reviewers-and-labels:
+    name: Assign T2 Reviewers and Labels to the PR
     runs-on: ubuntu-latest
-    strategy:
-            fail-fast: false
-            matrix:
-             containers: [ 0, 1, 2, 3, 4 ]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install Packages
-        run:  npm install  
-      - name: install playwright
-        run: npx playwright install-deps webkit
-      - name: Run Tests
-        run:  npx cypress run --env allure=true --spec $(node cypress-parallel.js ${{ matrix.containers }} 5) --browser chrome --headed
-      
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.1
-        if: always()
-        with:
-          name: ReportsData
-          path: allure-results
-  job2:
-    name: reports
-    if: always()
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v3.0.1
-        with:
-          name: ReportsData
-          path: allure-results 
-      - name: Get Allure history
-        uses: actions/checkout@v2
-        if: always()
-        continue-on-error: true
-        with:
-            ref: gh-pages
-            path: gh-pages
-         
-      - name: Allure Report action from marketplace
-        uses: simple-elf/allure-report-action@master
-        if: always()
-        with:
-          allure_results: allure-results
-          allure_history: allure-history
-          keep_reports: 20
-  
-      - name: Deploy report to Github Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
+      - name: Add Labels to the PR
+        run: |
+          echo "Adding applicable labels to the PR $NUMBER"
+          curl -L -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.Test_Token }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/${{ github.repository }}/issues/$NUMBER/labels \
+          -d '{"labels": '"$LABELS"'}'
