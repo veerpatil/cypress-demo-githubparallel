@@ -8,5 +8,6 @@ module.exports = defineConfig({
     },
   },
   experimentalWebKitSupport: true,
-  video:false
+  video:false,
+  projectId: "eaw8oh"
 });
